@@ -30,8 +30,8 @@ class SimpleClient < Net::IRC::Client
 end
 
 SimpleClient.new('irc.twitch.tv', 6667,
-                 :pass => ENV['OAUTH_PASS'],
-                 :user => ENV['TWITCH_USERNAME'],
-                 :nick => ENV['TWITCH_USERNAME'],
-                 :real => ENV['TWITCH_USERNAME'],
+                 :pass => ENV['OAUTH_PASS'].dup,
+                 :user => ENV['TWITCH_USERNAME'].dup,
+                 :nick => ENV['TWITCH_USERNAME'].dup,
+                 :real => ENV['TWITCH_USERNAME'].dup,
                 ).start
