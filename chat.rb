@@ -1,6 +1,7 @@
 require 'net/irc'
-require 'out_calculator'
-require 'command_parser'
+Dir["./lib/*.rb"].each {|file| require file }
+# require 'out_calculator'
+# require 'command_parser'
 
 class SimpleClient < Net::IRC::Client
   def on_rpl_welcome(m)

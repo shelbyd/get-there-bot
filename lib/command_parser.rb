@@ -32,20 +32,30 @@ class CommandParser
         if start_of_text?
           go_into_text
         elsif @in_text
-          @in_text = false if end_of_text?
+          @text += ' '
+          if end_of_text?
+            if !@in_option
+              @text += @argument[0..-2]
+              @arguments << @text
+            end
+            @in_text = false
+            @in_option = false
+          else
+            @text += @argument
+          end
         elsif valid_option?
           @in_option = true
         elsif @in_option
           @in_option = false
         else
-          @arguments << @argument
+          @arguments << parsed_argument
         end
       end
     end
 
     def self.go_into_text
-      @in_option = false
       @in_text = true
+      @text = @argument[1..-1]
     end
 
     def self.parse_for_options
@@ -74,7 +84,7 @@ class CommandParser
       elsif @in_text
         build_text
       else
-        @options[@option] = parsed_option
+        @options[@option] = parsed_argument
         @option = nil
       end
     end
@@ -115,7 +125,7 @@ class CommandParser
       @argument[-1] == '"'
     end
 
-    def self.parsed_option
+    def self.parsed_argument
       begin
         Integer(@argument)
       rescue ArgumentError, TypeError

@@ -21,6 +21,13 @@ describe CommandParser do
     CommandParser.parse('!something arg1 arg2 arg3').arguments.should == ['arg1', 'arg2', 'arg3']
   end
 
+  it 'parses arguments as types' do
+    CommandParser.parse('!something text').arguments[0].should == 'text'
+    CommandParser.parse('!something 15').arguments[0].should == 15
+    CommandParser.parse('!something 15.6667').arguments[0].should == 15.6667
+    CommandParser.parse('!something "some text"').arguments[0].should == 'some text'
+  end
+
   # TODO: Parse a list
   it 'parses options' do
     CommandParser.parse('!something --bool text').options[:bool].should == 'text'
