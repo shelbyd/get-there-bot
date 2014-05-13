@@ -19,4 +19,17 @@ describe OutCalculator do
     OutCalculator.calculate(3, 0, 1).should == 0
     OutCalculator.calculate(3, 1, 0).should == 0
   end
+
+  it 'errors on strings' do
+    expect {
+      OutCalculator.calculate('string', 1, 1).should == 0
+      }.to raise_error(InvalidCommandException)
+    expect {
+      OutCalculator.calculate(3, 'string', 1).should == 0
+      }.to raise_error(InvalidCommandException)
+    expect {
+      OutCalculator.calculate(3, 1, 'string').should == 0
+      }.to raise_error(InvalidCommandException)
+
+  end
 end
