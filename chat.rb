@@ -1,5 +1,6 @@
 require 'net/irc'
 require 'out_calculator'
+require 'command_parser'
 
 class SimpleClient < Net::IRC::Client
   def on_rpl_welcome(m)
@@ -11,14 +12,11 @@ class SimpleClient < Net::IRC::Client
   def on_privmsg(m)
     return unless m[1][0] == '!'
     channel = m[0]
-    message_parts = m[1].split(' ', 2)
-    command = message_parts[0][1..-1]
-    arguments = message_parts[1]
-    if command == 'calculate_outs'
-      arguments = arguments.split(' ')
-      cards = arguments[0].to_i
-      outs = arguments[1].to_i
-      draws = arguments[2].to_i
+    command = CommandParser.parse(m[1])
+    if command.action == :calculate_outs
+      cards = command.arguments[0]
+      outs = command.arguments[1]
+      draws = command.arguments[2]
       result = OutCalculator.calculate(cards, outs, draws)
       post PRIVMSG, channel, (result.to_f * 100).to_s
     end
