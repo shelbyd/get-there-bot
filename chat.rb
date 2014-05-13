@@ -3,7 +3,7 @@ Dir["./lib/*.rb"].each {|file| require file }
 
 class SimpleClient < Net::IRC::Client
   def on_rpl_welcome(m)
-    ENV['CHANNELS'].split(', ').each do |channel|
+    ENV['CHANNELS'].split(' ').each do |channel|
       post JOIN, "##{channel}"
     end
   end
