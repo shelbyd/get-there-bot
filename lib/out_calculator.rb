@@ -3,6 +3,7 @@ class OutCalculator
   def self.calculate(cards, outs, draws)
     raise InvalidCommandException if cards.is_a? String or outs.is_a? String or draws.is_a? String
     return 0 if cards <= 0 or outs <= 0 or draws <= 0
+    return 1 if outs >= cards or draws >= cards
     all_draws = choose(cards, draws)
     draws_containing_out = choose(cards - outs, draws)
     1 - (draws_containing_out/all_draws.to_f)
