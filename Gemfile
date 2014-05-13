@@ -1,3 +1,4 @@
 source 'https://rubygems.org'
 
-gem 'cinch'
+gem 'net-irc'
+gem 'rspec-core'
