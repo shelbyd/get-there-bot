@@ -12,11 +12,11 @@ class SimpleClient < Net::IRC::Client
   def on_privmsg(m)
     return unless m[1][0] == '!'
     channel = m[0]
-    command = CommandParser.parse(m[1])
+    command = CommandParser.parse(m[1], :outs => 1, :draws => 1)
     if command.action == :calculate_outs
       cards = command.arguments[0]
-      outs = command.arguments[1]
-      draws = command.arguments[2]
+      outs = command.arguments[1] || command.options[:outs]
+      draws = command.arguments[2] || command.options[:draws]
       result = OutCalculator.calculate(cards, outs, draws)
       post PRIVMSG, channel, (result.to_f * 100).to_s
     end

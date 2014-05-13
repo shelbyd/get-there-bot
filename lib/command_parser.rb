@@ -4,13 +4,13 @@ class CommandParser
     string.strip.start_with? '!'
   end
 
-  def self.parse(string)
+  def self.parse(string, options = {})
     command_split = string.split(' ', 2)
     action = command_split[0][1..-1].gsub('-', '_').to_sym
     raise CommandParsingException if action.size == 0
 
     @arguments = []
-    @options = {}
+    @options = options
 
     @arguments_string = command_split[1]
     if !@arguments_string.nil? and @arguments_string.size

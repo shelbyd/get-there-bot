@@ -40,4 +40,9 @@ describe CommandParser do
     parsed.options[:num].should == 15
     parsed.options[:float].should == 1.667
   end
+
+  it 'allows default options' do
+    parsed = CommandParser.parse('!something', :opt => true)
+    parsed.options[:opt].should == true
+  end
 end
