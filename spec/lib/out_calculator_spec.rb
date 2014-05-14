@@ -46,4 +46,8 @@ describe OutCalculator do
       OutCalculator.calculate(limit, 1, 1)
     }.to_not raise_error
   end
+
+  it 'calculates big things' do
+    OutCalculator.calculate(13757, 300, 600).should_not be_nan
+  end
 end
