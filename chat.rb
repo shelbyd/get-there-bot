@@ -14,7 +14,7 @@ class SimpleClient < Net::IRC::Client
     return unless m[1][0] == '!'
     begin
       channel = m[0]
-      command = CommandParser.parse(m[1], :outs => 1, :draws => 1, :cards => 1)
+      command = CommandParser.parse(m[1])
       if command.action == :calculate_outs
         result = OutCalculator.evaluate(command)
         out_message = PercentagePresenter.present(result)

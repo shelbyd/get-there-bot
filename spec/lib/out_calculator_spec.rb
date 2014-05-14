@@ -34,7 +34,7 @@ describe OutCalculator do
   describe 'evaluate' do
     let(:options) {
       {
-        :cards => 1,
+        :cards => 4,
         :outs => 2,
         :draws => 3,
       }
@@ -43,27 +43,45 @@ describe OutCalculator do
       double(:options => options, :arguments => [])
     }
 
-    describe 'prefers arguments to options' do
+    describe 'prefers options to arguments' do
       it '0 is cards' do
         command.stub(:arguments).and_return([5])
-        OutCalculator.should_receive(:calculate).with(5, 2, 3)
+        OutCalculator.should_receive(:calculate).with(4, 2, 3)
         OutCalculator.evaluate(command)
       end
       it '1 is outs' do
         command.stub(:arguments).and_return([nil, 5])
-        OutCalculator.should_receive(:calculate).with(1, 5, 3)
+        OutCalculator.should_receive(:calculate).with(4, 2, 3)
         OutCalculator.evaluate(command)
       end
       it '2 is draws' do
         command.stub(:arguments).and_return([nil, nil, 5])
-        OutCalculator.should_receive(:calculate).with(1, 2, 5)
+        OutCalculator.should_receive(:calculate).with(4, 2, 3)
+        OutCalculator.evaluate(command)
+      end
+    end
+
+    describe 'defaults to 1 for' do
+      it 'cards' do
+        options[:cards] = nil
+        OutCalculator.should_receive(:calculate).with(1, 2, 3)
+        OutCalculator.evaluate(command)
+      end
+      it 'outs' do
+        options[:outs] = nil
+        OutCalculator.should_receive(:calculate).with(4, 1, 3)
+        OutCalculator.evaluate(command)
+      end
+      it 'draws' do
+        options[:draws] = nil
+        OutCalculator.should_receive(:calculate).with(4, 2, 1)
         OutCalculator.evaluate(command)
       end
     end
 
     context 'valid commands' do
       it 'returns the calculation' do
-        OutCalculator.stub(:calculate).with(1, 2, 3).and_return(0.1)
+        OutCalculator.stub(:calculate).with(4, 2, 3).and_return(0.1)
         OutCalculator.evaluate(command).should == 0.1
       end
 
