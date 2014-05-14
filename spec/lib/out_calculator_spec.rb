@@ -93,19 +93,19 @@ describe OutCalculator do
           options[:cards] = 'something'
           expect {
             OutCalculator.evaluate(command)
-          }.to raise_error(InvalidCommandException, "'cards' cannot be a string")
+          }.to raise_error(InvalidCommandException, "'cards' must be an integer")
         end
         it 'outs' do
           options[:outs] = 'something'
           expect {
             OutCalculator.evaluate(command)
-          }.to raise_error(InvalidCommandException, "'outs' cannot be a string")
+          }.to raise_error(InvalidCommandException, "'outs' must be an integer")
         end
         it 'draws' do
           options[:draws] = 'something'
           expect {
             OutCalculator.evaluate(command)
-          }.to raise_error(InvalidCommandException, "'draws' cannot be a string")
+          }.to raise_error(InvalidCommandException, "'draws' must be an integer")
         end
       end
 

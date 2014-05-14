@@ -11,7 +11,7 @@ class OutCalculator
     @draws = command.options[:draws] || command.arguments[2] || 1
     [:cards, :outs, :draws].each { |option|
       unless instance_variable_get("@#{option}").is_a? Integer
-        raise InvalidCommandException.new("'#{option.to_s}' cannot be a string")
+        raise InvalidCommandException.new("'#{option.to_s}' must be an integer")
       end
     }
 
