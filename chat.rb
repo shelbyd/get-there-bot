@@ -18,7 +18,7 @@ class SimpleClient < Net::IRC::Client
         outs = command.arguments[1] || command.options[:outs]
         draws = command.arguments[2] || command.options[:draws]
         result = OutCalculator.calculate(cards, outs, draws)
-        post PRIVMSG, channel, (result.to_f * 100).to_s
+        post PRIVMSG, channel, "#{(result.to_f * 100).round(2)}%"
       end
     rescue InvalidCommandException
       post PRIVMSG, channel, "invalid command '#{m[1]}'"
