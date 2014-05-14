@@ -37,12 +37,13 @@ describe OutCalculator do
       }.to raise_error(InvalidCommandException)
   end
 
-  it 'is invalid if there are more than 4096 cards' do
+  it 'is invalid if there are more than 13757 cards' do
+    limit = 13757
     expect {
-      OutCalculator.calculate(4096, 1, 1)
+      OutCalculator.calculate(limit + 1, 1, 1)
     }.to raise_error(InvalidCommandException)
     expect {
-      OutCalculator.calculate(4095, 1, 1)
+      OutCalculator.calculate(limit, 1, 1)
     }.to_not raise_error
   end
 end

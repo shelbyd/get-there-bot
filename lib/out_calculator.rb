@@ -1,10 +1,11 @@
 class OutCalculator
 
+  STACK_LIMIT = 13757
   @memoized = {}
 
   def self.calculate(cards, outs, draws)
     raise InvalidCommandException if cards.is_a? String or outs.is_a? String or draws.is_a? String
-    raise InvalidCommandException if cards >= 4096
+    raise InvalidCommandException if cards > STACK_LIMIT
     return 0 if cards <= 0 or outs <= 0 or draws <= 0
     return 1 if outs >= cards or draws >= cards
     all_draws = choose(cards, draws)
@@ -15,9 +16,10 @@ class OutCalculator
   def self.choose(n, k)
     return 0 if k > n
     return 1 if k == 0 or n == k
+    return choose(n, n-k) if k > n/2
     index = "#{n},#{k}".to_sym
     unless @memoized[index]
-      @memoized[index] = choose(n-1, k-1) + choose(n-1, k)
+      @memoized[index] = (n * choose(n-1, k-1)) / k
     end
     @memoized[index]
   end
