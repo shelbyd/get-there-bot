@@ -16,10 +16,7 @@ class SimpleClient < Net::IRC::Client
       channel = m[0]
       command = CommandParser.parse(m[1], :outs => 1, :draws => 1, :cards => 1)
       if command.action == :calculate_outs
-        cards = command.arguments[0] || command.options[:cards]
-        outs = command.arguments[1] || command.options[:outs]
-        draws = command.arguments[2] || command.options[:draws]
-        result = OutCalculator.calculate(cards, outs, draws)
+        result = OutCalculator.evaluate(command)
         out_message = PercentagePresenter.present(result)
         post PRIVMSG, channel, out_message
       end

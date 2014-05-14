@@ -5,9 +5,24 @@ class OutCalculator
   STACK_LIMIT = 13757
   @memoized = {}
 
+  def self.evaluate(command)
+    cards = command.arguments[0] || command.options[:cards]
+    outs = command.arguments[1] || command.options[:outs]
+    draws = command.arguments[2] || command.options[:draws]
+    [:cards, :outs, :draws].each { |option|
+      if command.options[option].is_a? String
+        raise InvalidCommandException.new("'#{option.to_s}' cannot be a string")
+      end
+    }
+
+    if cards > STACK_LIMIT
+      raise InvalidCommandException.new("cannot have more than 13757 cards")
+    end
+
+    calculate(cards, outs, draws)
+  end
+
   def self.calculate(cards, outs, draws)
-    raise InvalidCommandException if cards.is_a? String or outs.is_a? String or draws.is_a? String
-    raise InvalidCommandException if cards > STACK_LIMIT
     return 0 if cards <= 0 or outs <= 0 or draws <= 0
     return 1 if outs >= cards or draws >= cards
     all_draws = to_float choose(cards, draws)
