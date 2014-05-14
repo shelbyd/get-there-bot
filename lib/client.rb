@@ -23,6 +23,7 @@ class Client < Net::IRC::Client
     rescue InvalidCommandException
       post PRIVMSG, channel, "invalid command '#{m[1]}'"
     rescue => e
+      puts e
       log.fatal("Caught unknown exception")
       log.fatal(e)
     end
