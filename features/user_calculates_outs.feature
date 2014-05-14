@@ -15,3 +15,5 @@ Feature: user calculates outs
       | "!calculate_outs --outs 9 33 --draws 3"| "62.9%"|
       | "!calculate_outs --outs 9 --draws 3 33"| "62.9%"|
       | "!calculate_outs --outs 9 --draws 3 --cards 33"| "62.9%"|
+
+      | "!calculate_outs asdf" | "invalid command '!calculate_outs asdf'" |

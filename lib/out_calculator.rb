@@ -6,20 +6,20 @@ class OutCalculator
   @memoized = {}
 
   def self.evaluate(command)
-    cards = command.options[:cards] || command.arguments[0] || 1
-    outs = command.options[:outs] || command.arguments[1] || 1
-    draws = command.options[:draws] || command.arguments[2] || 1
+    @cards = command.options[:cards] || command.arguments[0] || 1
+    @outs = command.options[:outs] || command.arguments[1] || 1
+    @draws = command.options[:draws] || command.arguments[2] || 1
     [:cards, :outs, :draws].each { |option|
-      if command.options[option].is_a? String
+      if instance_variable_get("@#{option}").is_a? String
         raise InvalidCommandException.new("'#{option.to_s}' cannot be a string")
       end
     }
 
-    if cards > STACK_LIMIT
+    if @cards > STACK_LIMIT
       raise InvalidCommandException.new("cannot have more than 13757 cards")
     end
 
-    calculate(cards, outs, draws)
+    calculate(@cards, @outs, @draws)
   end
 
   def self.calculate(cards, outs, draws)
