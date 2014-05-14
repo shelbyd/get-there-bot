@@ -1,6 +1,8 @@
 require 'net/irc'
 Dir["./lib/*.rb"].each {|file| require file }
 
+log = Logger.new(STDOUT)
+
 class SimpleClient < Net::IRC::Client
   def on_rpl_welcome(m)
     ENV['CHANNELS'].split(' ').each do |channel|
@@ -22,7 +24,9 @@ class SimpleClient < Net::IRC::Client
       end
     rescue InvalidCommandException
       post PRIVMSG, channel, "invalid command '#{m[1]}'"
-    rescue Exception
+    rescue => e
+      log.fatal("Caught unknown exception")
+      log.fatal(e)
     end
   end
 end
