@@ -1,4 +1,4 @@
-Dir["./lib/*.rb"].each {|file| require file }
+require './lib/client.rb'
 
 Client.new('irc.twitch.tv', 6667,
                  :pass => ENV['OAUTH_PASS'].dup,

@@ -1,4 +1,5 @@
 require 'net/irc'
+Dir["./lib/*.rb"].each {|file| require file }
 
 log = Logger.new(STDOUT)
 
