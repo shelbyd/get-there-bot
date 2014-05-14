@@ -1,5 +1,7 @@
 require './lib/client.rb'
 
+STDOUT.sync = true
+
 Client.new('irc.twitch.tv', 6667,
                  :pass => ENV['OAUTH_PASS'].dup,
                  :user => ENV['TWITCH_USERNAME'].dup,
