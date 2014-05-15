@@ -1,8 +1,8 @@
 Feature: user calculates outs
 
   Scenario Outline: commands
-    Given the bot has joined the channel "#channel"
-    When I type <command> in "#channel"
+    Given the bot has joined the channel "channel"
+    When I type <command> in "channel"
     Then I should see <result>
 
     Examples:

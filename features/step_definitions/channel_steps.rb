@@ -1,5 +1,5 @@
 Given(/^the bot is listening for metacommands on "(.*?)"$/) do |channel|
-  @client.meta_channel = channel
+  @client.meta_channel = channel.start_with?('#') ? channel : "##{channel}"
 end
 
 Then(/^the bot joins the channel "(.*?)"$/) do |channel|
@@ -8,6 +8,6 @@ Then(/^the bot joins the channel "(.*?)"$/) do |channel|
 end
 
 Given(/^the bot has joined the channel "(.*?)"$/) do |channel|
-  @client.join_channel channel
+  @client.add_to_channels channel
 end
 

@@ -9,22 +9,12 @@ class TestClient < Client
     @channels = []
   end
 
-  def post(type, channel, text)
-    return unless @channels.include?(channel) or @meta_channel == channel
-    @sent[channel] ||= []
+  def post(type, channel, text='')
+    channel = "##{channel}" unless channel.start_with? '#'
     if type == PRIVMSG
       @sent[channel] << text
-    end
-  end
-
-  def join_channel(channel)
-    return if @channels.include? channel
-    if channel.start_with? '#'
-      @channels << channel[1..-1]
-      @channels << channel
-    else
-      @channels << channel
-      @channels << '#' + channel
+    elsif type == JOIN
+      @sent[channel] ||= []
     end
   end
 
