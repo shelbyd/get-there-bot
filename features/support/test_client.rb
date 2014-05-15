@@ -1,4 +1,5 @@
 require 'client'
+require 'fakeredis'
 
 class TestClient < Client
   attr_reader :sent
@@ -34,4 +35,5 @@ end
 
 Before do
   @client = TestClient.new
+  @client.on_rpl_welcome(nil)
 end

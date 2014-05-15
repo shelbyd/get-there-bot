@@ -7,11 +7,11 @@ Feature: user adds bot to channel
     Given the bot is listening for metacommands on "#gettherebot"
     And I am chatting as "darkest_mage"
     When I type "!join" in "#gettherebot"
-    Then the bot joins the channel "#darkest_mage"
+    Then the bot joins the channel "darkest_mage"
     And I should see "joined channel 'darkest_mage'"
 
   Scenario: already on channel
-    Given the bot has joined the channel "#numotthenummy"
+    Given the bot has joined the channel "numotthenummy"
     And the bot is listening for metacommands on "#gettherebot"
     And I am chatting as "numotthenummy"
     When I type "!join" in "#gettherebot"

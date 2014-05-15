@@ -1,4 +1,5 @@
 require 'net/irc'
+require 'redis'
 Dir["./lib/*.rb"].each {|file| require file }
 
 class Client < Net::IRC::Client
@@ -15,7 +16,13 @@ class Client < Net::IRC::Client
   def on_rpl_welcome(m)
     @meta_channel = '#gettherebot'
     join_channel meta_channel
-    @channels = []
+
+    unless ENV["REDIS_URL"].nil?
+      @redis_client = Redis.new(:url => ENV["REDIS_URL"])
+    else
+      @redis_client = Redis.new
+    end
+    @channels = @redis_client.smembers('channels')
   end
 
   def on_privmsg(m)
@@ -46,6 +53,7 @@ class Client < Net::IRC::Client
   
   def add_to_channels(channel)
     @channels << channel
+    @redis_client.sadd 'channels', channel
     join_channel channel
   end
 

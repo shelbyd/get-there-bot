@@ -4,6 +4,7 @@ end
 
 Then(/^the bot joins the channel "(.*?)"$/) do |channel|
   @client.channels.should include channel
+  Redis.new.smembers('channels').should include channel
 end
 
 Given(/^the bot has joined the channel "(.*?)"$/) do |channel|
