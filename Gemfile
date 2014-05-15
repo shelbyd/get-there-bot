@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 ruby '2.1.2'
 
 gem 'net-irc'
-gem 'rspec'
-
-gem 'cucumber'
+group :test do
+  gem 'rspec'
+  gem 'cucumber'
+end
