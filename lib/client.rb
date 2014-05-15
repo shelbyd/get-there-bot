@@ -17,12 +17,7 @@ class Client < Net::IRC::Client
     @meta_channel = '#gettherebot'
     join_channel meta_channel
 
-    unless ENV["REDIS_URL"].nil?
-      @redis_client = Redis.new(:url => ENV["REDIS_URL"])
-    else
-      @redis_client = Redis.new
-    end
-    @channels = @redis_client.smembers('channels')
+    join_all_channels
   end
 
   def on_privmsg(m)
@@ -55,6 +50,18 @@ class Client < Net::IRC::Client
     @channels << channel
     @redis_client.sadd 'channels', channel
     join_channel channel
+  end
+
+  def join_all_channels
+    unless ENV["REDIS_URL"].nil?
+      @redis_client = Redis.new(:url => ENV["REDIS_URL"])
+    else
+      @redis_client = Redis.new
+    end
+    @channels = @redis_client.smembers('channels')
+    @channels.each do |channel|
+      join_channel channel
+    end
   end
 
   def join_channel(channel)

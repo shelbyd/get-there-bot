@@ -18,6 +18,7 @@ class TestClient < Client
   end
 
   def join_channel(channel)
+    return if @channels.include? channel
     if channel.start_with? '#'
       @channels << channel[1..-1]
       @channels << channel
