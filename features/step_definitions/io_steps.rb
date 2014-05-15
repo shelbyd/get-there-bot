@@ -1,23 +1,5 @@
-require 'client'
-
-class TestClient < Client
-  attr_reader :sent
-
-  def initialize
-    @sent = {}
-  end
-
-  def post(type, channel, text)
-    @sent[channel] ||= []
-    if type == PRIVMSG
-      @sent[channel] << text
-    end
-  end
-end
-
-When(/^I type "(.*?)"$/) do |command|
-  @client = TestClient.new
-  @channel = 'nothing'
+When(/^I type "(.*?)" in "(.*?)"$/) do |command, channel|
+  @channel = channel
   @client.on_privmsg([@channel, command])
 end
 
