@@ -18,7 +18,11 @@ class CommandParser
       parse_for_options
     end
 
-    Command.new(action, @arguments, @options)
+    command = Command.new
+    command.action = action
+    command.arguments = @arguments
+    command.options = @options
+    command
   end
 
   private
@@ -140,4 +144,5 @@ end
 
 class CommandParsingException < Exception; end
 
-class Command < Struct.new(:action, :arguments, :options); end
+require 'ostruct'
+class Command < OpenStruct; end
