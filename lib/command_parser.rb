@@ -18,11 +18,10 @@ class CommandParser
       parse_for_options
     end
 
-    command = Command.new
-    command.action = action
-    command.arguments = @arguments
-    command.options = @options
-    command
+    Command.new(
+      :action => action,
+      :arguments => @arguments,
+      :options => @options,)
   end
 
   private
