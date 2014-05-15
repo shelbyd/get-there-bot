@@ -1,13 +1,21 @@
 require 'net/irc'
 Dir["./lib/*.rb"].each {|file| require file }
 
-log = Logger.new(STDOUT)
-
 class Client < Net::IRC::Client
+  attr_accessor :meta_channel
+
+  def method_missing(m, *args, &block)
+    raise NoMethodError.new("No method #{m}")
+  end
+
+  def log
+    @log ||= Logger.new(STDOUT)
+  end
+
   def on_rpl_welcome(m)
-    ENV['CHANNELS'].split(' ').each do |channel|
-      post JOIN, "##{channel}"
-    end
+    @meta_channel = '#gettherebot'
+    join_channel meta_channel
+    @channels = []
   end
 
   def on_privmsg(m)
@@ -15,10 +23,18 @@ class Client < Net::IRC::Client
     begin
       command = CommandParser.parse(m[1])
       command.channel = m[0]
+      command.user = user_from_message m
       if command.action == :calculate_outs
         result = OutCalculator.evaluate(command)
         out_message = PercentagePresenter.present(result)
         post PRIVMSG, command.channel, out_message
+      elsif command.action == :join and command.channel == meta_channel
+        if @channels.include? command.user
+          post PRIVMSG, meta_channel, "already joined channel '#{command.user}'"
+        else
+          add_to_channels command.user
+          post PRIVMSG, meta_channel, "joined channel '#{command.user}'"
+        end
       end
     rescue InvalidCommandException
       post PRIVMSG, command.channel, "invalid command '#{m[1]}'"
@@ -26,6 +42,20 @@ class Client < Net::IRC::Client
       log.fatal("Caught unknown exception")
       log.fatal(e)
     end
+  end
+  
+  def add_to_channels(channel)
+    @channels << channel
+    join_channel channel
+  end
+
+  def join_channel(channel)
+    channel = "##{channel}" unless channel.start_with? '#'
+    post JOIN, channel
+  end
+
+  def user_from_message(message)
+    message.prefix.split('!')[1].split('@')[0]
   end
 end
 

@@ -1,6 +1,7 @@
 When(/^I type "(.*?)" in "(.*?)"$/) do |command, channel|
   @channel = channel
-  @client.on_privmsg([@channel, command])
+  message = Net::IRC::Message.new("#{@nick}!#{@nick}@#{@nick}.tmi.twitch.tv", Net::IRC::Constants::PRIVMSG, [@channel, command])
+  @client.on_privmsg(message)
 end
 
 Then(/^I should see "(.*?)"$/) do |result|

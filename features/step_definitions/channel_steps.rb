@@ -1,9 +1,9 @@
-Given(/^the bot is listening for metacommands on "(.*?)"$/) do |arg1|
-    pending # express the regexp above with the code you wish you had
+Given(/^the bot is listening for metacommands on "(.*?)"$/) do |channel|
+  @client.meta_channel = channel
 end
 
-Then(/^the bot joins the channel "(.*?)"$/) do |arg1|
-    pending # express the regexp above with the code you wish you had
+Then(/^the bot joins the channel "(.*?)"$/) do |channel|
+  @client.channels.should include channel
 end
 
 Given(/^the bot has joined the channel "(.*?)"$/) do |channel|
