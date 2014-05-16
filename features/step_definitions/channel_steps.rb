@@ -3,7 +3,6 @@ Given(/^the bot is listening for metacommands on "(.*?)"$/) do |channel|
 end
 
 Then(/^the bot joins the channel "(.*?)"$/) do |channel|
-  @client.channels.should include channel
   Redis.new.smembers('channels').should include channel
 end
 

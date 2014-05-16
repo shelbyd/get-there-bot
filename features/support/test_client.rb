@@ -2,7 +2,7 @@ require 'client'
 require 'fakeredis'
 
 class TestClient < Client
-  attr_reader :sent
+  attr_reader :sent, :repository
 
   def initialize
     @sent = {}

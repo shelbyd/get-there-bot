@@ -17,6 +17,12 @@ class Client < Net::IRC::Client
     @meta_channel = '#gettherebot'
     join_channel meta_channel
 
+    unless ENV["REDIS_URL"].nil?
+      @redis_client = Redis.new(:url => ENV["REDIS_URL"])
+    else
+      @redis_client = Redis.new
+    end
+    @channel_repository = ChannelRepository.from_redis @redis_client
     join_all_channels
   end
 
@@ -31,7 +37,7 @@ class Client < Net::IRC::Client
         out_message = PercentagePresenter.present(result)
         post PRIVMSG, command.channel, out_message
       elsif command.action == :join and command.channel == meta_channel
-        if @channels.include? command.user
+        if @channel_repository.channels.include? command.user
           post PRIVMSG, meta_channel, "already joined channel '#{command.user}'"
         else
           add_to_channels command.user
@@ -47,19 +53,12 @@ class Client < Net::IRC::Client
   end
   
   def add_to_channels(channel)
-    @channels << channel
-    @redis_client.sadd 'channels', channel
+    @channel_repository.add channel
     join_channel channel
   end
 
   def join_all_channels
-    unless ENV["REDIS_URL"].nil?
-      @redis_client = Redis.new(:url => ENV["REDIS_URL"])
-    else
-      @redis_client = Redis.new
-    end
-    @channels = @redis_client.smembers('channels')
-    @channels.each do |channel|
+    @channel_repository.channels.each do |channel|
       join_channel channel
     end
   end
