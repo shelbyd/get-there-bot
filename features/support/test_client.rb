@@ -2,11 +2,12 @@ require 'client'
 require 'fakeredis'
 
 class TestClient < Client
-  attr_reader :sent, :repository
+  attr_reader :sent, :repository, :joined_channels
 
   def initialize
     @sent = {}
     @channels = []
+    @joined_channels = []
   end
 
   def post(type, channel, text='')
@@ -15,6 +16,9 @@ class TestClient < Client
       @sent[channel] << text
     elsif type == JOIN
       @sent[channel] ||= []
+      @joined_channels << channel[1..-1]
+    elsif type == QUIT
+      @joined_channels.delete channel[1..-1]
     end
   end
 

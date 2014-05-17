@@ -43,6 +43,14 @@ class Client < Net::IRC::Client
           add_to_channels command.user
           post PRIVMSG, meta_channel, "joined channel '#{command.user}'"
         end
+      elsif command.action == :leave and command.channel == meta_channel
+        if @channel_repository.channels.include? command.user
+          @channel_repository.remove(command.user)
+          post QUIT, command.user
+          post PRIVMSG, meta_channel, "left channel '#{command.user}'"
+        else
+          post PRIVMSG, meta_channel, "not on channel '#{command.user}'"
+        end
       end
     rescue InvalidCommandException
       post PRIVMSG, command.channel, "invalid command '#{m[1]}'"
