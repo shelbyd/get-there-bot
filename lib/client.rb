@@ -46,7 +46,7 @@ class Client < Net::IRC::Client
       elsif command.action == :leave and command.channel == meta_channel
         if @channel_repository.channels.include? command.user
           @channel_repository.remove(command.user)
-          post QUIT, command.user
+          post PART, "##{command.user}"
           post PRIVMSG, meta_channel, "left channel '#{command.user}'"
         else
           post PRIVMSG, meta_channel, "not on channel '#{command.user}'"

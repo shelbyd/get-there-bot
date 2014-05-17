@@ -17,7 +17,7 @@ class TestClient < Client
     elsif type == JOIN
       @sent[channel] ||= []
       @joined_channels << channel[1..-1]
-    elsif type == QUIT
+    elsif type == PART
       @joined_channels.delete channel[1..-1]
     end
   end
