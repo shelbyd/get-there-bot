@@ -34,4 +34,16 @@ describe ChannelRepository do
       repository.remove('numotthenummy')
     end
   end
+
+  describe 'everything else' do
+    it 'tries to defer to the channels list' do
+      repository.should include('numotthenummy')
+    end
+
+    it 'fails if channels list does not implement it' do
+      expect {
+        repository.asdasdasd(1,2,3,4)
+      }.to raise_error(NoMethodError, "undefined method 'asdasdasd' for #{repository}")
+    end
+  end
 end
