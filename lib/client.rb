@@ -37,14 +37,14 @@ class Client < Net::IRC::Client
         out_message = PercentagePresenter.present(result)
         post PRIVMSG, command.channel, out_message
       elsif command.action == :join and command.channel == meta_channel
-        if @channel_repository.channels.include? command.user
+        if @channel_repository.include? command.user
           post PRIVMSG, meta_channel, "already joined channel '#{command.user}'"
         else
           add_to_channels command.user
           post PRIVMSG, meta_channel, "joined channel '#{command.user}'"
         end
       elsif command.action == :leave and command.channel == meta_channel
-        if @channel_repository.channels.include? command.user
+        if @channel_repository.include? command.user
           @channel_repository.remove(command.user)
           post PART, "##{command.user}"
           post PRIVMSG, meta_channel, "left channel '#{command.user}'"
@@ -66,7 +66,7 @@ class Client < Net::IRC::Client
   end
 
   def join_all_channels
-    @channel_repository.channels.each do |channel|
+    @channel_repository.each do |channel|
       join_channel channel
     end
   end
